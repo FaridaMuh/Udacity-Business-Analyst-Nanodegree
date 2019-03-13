@@ -1,0 +1,213 @@
+----Where are employees with sales located?
+
+SELECT e.city, e.region, e.country, count(distinct o.employeeid) as Total_Employees
+FROM employees e
+JOIN orders o
+    on e.employeeid = o.employeeid
+GROUP BY 1,2
+ORDER BY 3 desc;
+
+--Highest Performing Employees (Top 5)
+SELECT 
+ Year
+,LastName as Employee_LastName
+,Tot_Revenue
+FROM
+(  SELECT 
+   o.employeeid
+  ,e.LastName
+  ,e.FirstName
+  ,strftime('%Y',O.ORDERDATE) AS Year
+  ,round(sum((od.UnitPrice - (od.UnitPrice*od.discount))*od.Quantity),2) as Tot_Revenue
+  FROM Orders as o
+  JOIN Employees e
+     on o.employeeid = e.employeeid
+  JOIN OrderDetails AS od
+     on o.orderid = od.orderid
+  WHERE strftime('%Y',O.ORDERDATE) = '2014'
+  GROUP BY 1,2,3,4
+  ORDER BY 5 DESC
+  LIMIT 5
+  ) T1
+ UNION
+ SELECT 
+ Year
+,LastName as Employee_LastName
+,Tot_Revenue
+FROM
+(  SELECT 
+   o.employeeid
+  ,e.LastName
+  ,e.FirstName
+  ,strftime('%Y',O.ORDERDATE) AS Year
+  ,round(sum((od.UnitPrice - (od.UnitPrice*od.discount))*od.Quantity),2) as Tot_Revenue
+  FROM Orders as o
+  JOIN Employees e
+     on o.employeeid = e.employeeid
+  JOIN OrderDetails AS od
+     on o.orderid = od.orderid
+  WHERE strftime('%Y',O.ORDERDATE) = '2015'
+  GROUP BY 1,2,3,4
+  ORDER BY 5 DESC
+  LIMIT 5
+  ) T2
+ UNION
+ SELECT 
+ Year
+,LastName as Employee_LastName
+,Tot_Revenue
+FROM
+(  SELECT 
+   o.employeeid
+  ,e.LastName
+  ,e.FirstName
+  ,strftime('%Y',O.ORDERDATE) AS Year
+  ,round(sum((od.UnitPrice - (od.UnitPrice*od.discount))*od.Quantity),2) as Tot_Revenue
+  FROM Orders as o
+  JOIN Employees e
+     on o.employeeid = e.employeeid
+  JOIN OrderDetails AS od
+     on o.orderid = od.orderid
+  WHERE strftime('%Y',O.ORDERDATE) = '2016'
+  GROUP BY 1,2,3,4
+  ORDER BY 5 DESC
+  LIMIT 5
+  ) T3
+ GROUP BY 1, 2, 3
+ ORDER BY 1,3 desc;
+
+--Bottom 2 Performers
+SELECT 
+ Year
+,LastName as Employee_LastName
+,Tot_Revenue
+FROM
+(  SELECT 
+   o.employeeid
+  ,e.LastName
+  ,e.FirstName
+  ,strftime('%Y',O.ORDERDATE) AS Year
+  ,round(sum((od.UnitPrice - (od.UnitPrice*od.discount))*od.Quantity),2) as Tot_Revenue
+  FROM Orders as o
+  JOIN Employees e
+     on o.employeeid = e.employeeid
+  JOIN OrderDetails AS od
+     on o.orderid = od.orderid
+  WHERE strftime('%Y',O.ORDERDATE) = '2014'
+  GROUP BY 1,2,3,4
+  ORDER BY 5 
+  LIMIT 2
+  ) T1
+ UNION
+ SELECT 
+ Year
+,LastName as Employee_LastName
+,Tot_Revenue
+FROM
+(  SELECT 
+   o.employeeid
+  ,e.LastName
+  ,e.FirstName
+  ,strftime('%Y',O.ORDERDATE) AS Year
+  ,round(sum((od.UnitPrice - (od.UnitPrice*od.discount))*od.Quantity),2) as Tot_Revenue
+  FROM Orders as o
+  JOIN Employees e
+     on o.employeeid = e.employeeid
+  JOIN OrderDetails AS od
+     on o.orderid = od.orderid
+  WHERE strftime('%Y',O.ORDERDATE) = '2015'
+  GROUP BY 1,2,3,4
+  ORDER BY 5 
+  LIMIT 2
+  ) T2
+ UNION
+ SELECT 
+ Year
+,LastName as Employee_LastName
+,Tot_Revenue
+FROM
+(  SELECT 
+   o.employeeid
+  ,e.LastName
+  ,e.FirstName
+  ,strftime('%Y',O.ORDERDATE) AS Year
+  ,round(sum((od.UnitPrice - (od.UnitPrice*od.discount))*od.Quantity),2) as Tot_Revenue
+  FROM Orders as o
+  JOIN Employees e
+     on o.employeeid = e.employeeid
+  JOIN OrderDetails AS od
+     on o.orderid = od.orderid
+  WHERE strftime('%Y',O.ORDERDATE) = '2016'
+  GROUP BY 1,2,3,4
+  ORDER BY 5 
+    LIMIT 2
+  ) T3
+ GROUP BY 1, 2, 3
+ order by 1,3;
+
+--Employees with the most orders (Top 5)
+ SELECT 
+ Year
+,LastName as Employee_LastName
+,Num_of_Orders
+FROM
+(  SELECT 
+   e.employeeid
+  ,e.LastName
+  ,e.FirstName
+  ,strftime('%Y',O.ORDERDATE) AS Year
+  ,count(*) as Num_of_Orders
+  FROM Employees as e
+  JOIN Orders o
+     on e.employeeid = o.employeeid
+  WHERE strftime('%Y',O.ORDERDATE) = '2014'
+  GROUP BY 1,2,3,4
+  ORDER BY 5 DESC
+  limit 5
+  ) T1
+ UNION
+ SELECT 
+ Year
+,LastName as Employee_LastName
+,Num_of_Orders
+FROM
+(  SELECT 
+   e.employeeid
+  ,e.LastName
+  ,e.FirstName
+  ,strftime('%Y',O.ORDERDATE) AS Year
+  ,count(*) as Num_of_Orders
+  FROM Employees as e
+  JOIN Orders o
+    on e.employeeid = o.employeeid
+  WHERE strftime('%Y',O.ORDERDATE) = '2015'
+  GROUP BY 1,2,3,4
+  ORDER BY 5 DESC
+  limit 5
+  ) T2
+ UNION
+ SELECT 
+ Year
+,LastName as Employee_LastName
+,Num_of_Orders
+FROM
+(  SELECT 
+   e.employeeid
+  ,e.LastName
+  ,e.FirstName
+  ,strftime('%Y',O.ORDERDATE) AS Year
+  ,count(*) as Num_of_Orders
+  FROM Employees as e
+  JOIN Orders o
+     on e.employeeid = o.employeeid
+  WHERE strftime('%Y',O.ORDERDATE) = '2016'
+  GROUP BY 1,2,3,4
+  ORDER BY 5 DESC
+  limit 5
+  ) T3
+ GROUP BY 1, 2, 3
+ ORDER BY 1,3 desc;
+
+
+
+
